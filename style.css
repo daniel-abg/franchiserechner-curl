@@ -1,0 +1,159 @@
+* {
+	font-family: 'Roboto', non-serif;
+}
+html, body{
+	max-width: 100%;
+	overflow-x: hidden;
+}
+body {
+	background-color: #F1EFED;
+}
+div#wrapper {
+	min-height: calc(100vh - 60px);
+	height: 100%;
+}
+div.container {
+	max-width: 970px;
+}
+
+/* Kopfbereich */
+div#header {
+	margin-bottom: 30px;
+	box-shadow: 0 2px 4px 0 rgb(0 0 0 / 20%);
+}
+div#title {
+	background-color: #7F3589;
+	height: 116.125px;
+}
+div#header h1 {
+	text-align: center;
+	color: white;
+	margin-top: 35px;
+}
+div#logo {
+	background-color: white;
+}
+.logo {
+	width: 269px;
+	float: right;
+}
+
+/* Inhaltsbereich */
+h4 {
+	margin-left: 10px;
+}
+form {
+	background-color: white;
+	margin: 20px 0 20px 0;
+	padding: 10px;
+	padding-bottom: 20px;
+	box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%);
+}
+div.box {
+	padding: 10px 20px 20px 20px;
+	margin: 20px 0;
+	background-color: white;
+	box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%);
+}
+div#introductionContainer {
+	padding: 0 10px;
+	display: flex;
+	background-color: white;
+	align-items: center;
+	border-radius: 3px;
+	box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%);
+}
+i#introductionIcon{
+	color: #7F3589;
+	margin-left: 15px;
+	margin-right: 20px;
+}
+p#introduction {
+	margin-top: 23px;
+}
+a {
+	color: black;
+}
+a:hover {
+	text-decoration: none;
+	color: black;
+}
+.a-kosten {
+	display: block;
+	padding: 12px;
+	text-decoration: none;
+}
+.a-kosten:hover {
+	background-color: #8CBD3A;
+	color: white;
+}
+td.td-franchise {
+	padding: 12px;
+}
+td.td-kosten {
+	padding: 0;
+}
+.card {
+	margin: 10px 0 15px 0;
+}
+.float-right {
+	float: right;
+}
+p#submit-buttons {
+	margin-left: 10px;
+}
+.btn-default {
+	background: linear-gradient(to left, #7F3589 50%, #8CBD3A 50%) right;
+	color: white;
+	width: 150px;
+	border-radius: revert;
+	border: none;
+	background-size: 180%;
+	transition: all .5s ease-out;
+}
+.btn-default:hover {
+	background-position: left;
+	background-size: 200%;
+}
+.btn-check:checked+.btn, .btn.active, .btn.show, .btn:first-child:active, :not(.btn-check)+.btn:active {
+    color: white;
+    background-color: #8CBD3A;
+    border-color: #8CBD3A;
+}
+.btn-group > .btn:hover {
+	border-color: #CED4DA !important;
+}
+.btn-green {
+	background-color: white;
+	color: black;
+	border: 1px solid #CED4DA;
+
+}
+.btn-light {
+	background-color: #F1EFED;
+	width: 150px;
+	margin-left: 10px;
+	border-radius: revert;
+}
+div.alert {
+	margin-top: 10px;
+	box-shadow: 0 1px 4px 0 rgb(0 0 0 / 10%);
+}
+select {
+	height: 34px;
+	border-radius: 5px;
+	border: 1px solid #CCC;
+	padding: 6px 12px;
+}
+
+/* Fussbereich */
+div#footer {
+	color: white;
+	height: 60px;
+	width: 100%;
+	background-color: #7F3589;
+}
+div#footer p {
+	text-align: center;
+	line-height: 60px;
+}
