@@ -1,4 +1,23 @@
 <?php
+    function fetchData($url, $request_method = 'GET', $parameter = []) {
+        $ch = curl_init();
+
+        curl_setopt($ch, CURLOPT_URL, $url);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_FAILONERROR, true);
+        
+        if($request_method == 'POST') {
+            curl_setopt($ch, CURLOPT_POST, true);
+        }
+        if (!empty($parameter)) {
+            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($parameter));
+        }
+        $result = curl_exec($ch);
+        curl_close($ch);
+        
+        return json_decode($result, true);
+    }
+
     function definiereAltersgruppe($prämienjahr, $jahrgang) {
         $altersjahr = $prämienjahr - $jahrgang;
         return ($altersjahr < 19) ? "Kinder" : (($altersjahr < 26) ? "Jugendliche" : "Erwachsene");
@@ -29,30 +48,38 @@
         return min($selbstbehalt, $maxSelbstbehalt);
     }
     
-    function holeMonatspreamie($verbindung, $altersgruppe, $versicherungsmodell, $praemienregion, $unfalldeckung) {
-        $sql = "SELECT * FROM ".strtolower($verbindung->real_escape_string($altersgruppe))." WHERE Versicherungsmodell='".$verbindung->real_escape_string($versicherungsmodell)."' AND Kanton='".$verbindung->real_escape_string($praemienregion)."' AND Unfall='".$verbindung->real_escape_string($unfalldeckung)."'";
-        return $verbindung->query($sql)->fetch_assoc();
+    function holeMonatspraemie($altersgruppe, $versicherungsmodell, $praemienregion, $unfalldeckung) {
+        $url = 'http://localhost/franchiserechner-curl/backend/api.php?action=holeMonatspraemie';
+        $parameter = [
+            'altersgruppe' => $altersgruppe,
+            'versicherungsmodell' => $versicherungsmodell,
+            'praemienregion' => $praemienregion,
+            'unfalldeckung' => $unfalldeckung
+        ];
+        return fetchData($url, 'POST', $parameter);
     }
 
-    function holeGemeinde($plz) {
-		if(!is_numeric($plz) OR $plz >= 10000 OR $plz <= 0) { 
+    function holeGemeinde($PLZ) {
+		if(!is_numeric($PLZ) OR $PLZ >= 10000 OR $PLZ <= 0) { 
 			echo "";
 			return;
 		}
 
-		include 'connection.php';
+        $url = 'http://localhost/franchiserechner-curl/backend/api.php?action=getGemeindenByPLZ';
+        $parameter = [
+            'PLZ' => $PLZ
+        ];
+        $resultat = fetchData($url, 'POST', $parameter);
 
-		$sql = "SELECT * FROM orte WHERE PLZ = '".$verbindung->real_escape_string($plz)."'";
-		$resultat = $verbindung->query($sql);
-		
-		if($resultat->num_rows == 0) { 
+		if(count($resultat) == 0) { 
 			echo "<p class='mt-3 mb-0'>Die Grundversicherung bieten wir lediglich in den Kantonen Wallis und Bern an.</p>";
 			return;
 		}
 
 		echo "<div class='mt-3'>
-				<select class='form-control' name='praemienort' style='height: 100% !important;'>";	
-					while($eintrag = $resultat->fetch_assoc()) {
+				<select class='form-control' name='praemienort' style='height: 100% !important;'>";
+                    foreach ($resultat as $eintrag) {
+                        var_dump($eintrag);
 						$gemeinde = $eintrag['Gemeinde'];
 						$bfs = $eintrag['BFS'];
 						$ort = $eintrag['Ort'];

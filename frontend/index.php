@@ -11,7 +11,6 @@
 			define("PRAEMIENJAHR", 2023);
 
 			include 'header.php';
-			include 'connection.php';
 			include 'functions.php';
 
 			if(isset($_GET['output'])) {
@@ -165,7 +164,7 @@
 					} else {
 						$altersgruppe = definiereAltersgruppe(PRAEMIENJAHR, $jahrgang);
 						$franchisen = definiereFranchisen($altersgruppe);
-						$monatspaemie = holeMonatspreamie($verbindung, $altersgruppe, $versicherungsmodell, $praemienregion, $unfalldeckung);
+						$monatspaemie = holeMonatspraemie($altersgruppe, $versicherungsmodell, $praemienregion, $unfalldeckung);
 						
 						foreach($franchisen as $franchise) {
 							if ($gesundheitskosten > $franchise) {
@@ -218,7 +217,6 @@
 						</div>
 						
 						<?php
-							$verbindung->close();
 							echo '<div class="alert alert-info" role="alert">*Bitte beachten Sie, dass die Berechnung auf Ihren Angaben basiert und daher keine Garantie gewährleistet wird.</div>';					}
 				}
 			?>
