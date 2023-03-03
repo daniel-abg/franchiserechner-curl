@@ -6,14 +6,17 @@
 
     switch($action) {
         case "holeMonatspraemie":
-            $altersgruppe = isset($_POST['altersgruppe']) ? $_POST['altersgruppe'] : exit('Missing parameter: altersgruppe');
-            $versicherungsmodell = isset($_POST['versicherungsmodell']) ? $_POST['versicherungsmodell'] : exit('Missing parameter: versicherungsmodell');
-            $praemienregion = isset($_POST['praemienregion']) ? $_POST['praemienregion'] : exit('Missing parameter: praemienregion');
-            $unfalldeckung = isset($_POST['unfalldeckung']) ? $_POST['unfalldeckung'] : exit('Missing parameter: unfalldeckung');
+            $requiredParams = ['altersgruppe', 'versicherungsmodell', 'praemienregion', 'unfalldeckung'];
+            foreach($requiredParams as $param){
+                ${$param} = $_POST[$param] ?? exit("Missing parameter: $param");
+            }
             echo json_encode(holeMonatspraemie($verbindung, $altersgruppe, $versicherungsmodell, $praemienregion, $unfalldeckung));
             break;
         case "getGemeindenByPLZ":
-            $PLZ = isset($_POST['PLZ']) ? $_POST['PLZ'] : exit('Missing parameter: PLZ');
+            $requiredParams = ['PLZ'];
+            foreach($requiredParams as $param){
+                ${$param} = $_POST[$param] ?? exit("Missing parameter: $param");
+            }
             echo json_encode(holeGemeinde($verbindung, $PLZ));
             break;
         default:
