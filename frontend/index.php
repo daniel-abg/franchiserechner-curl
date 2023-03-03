@@ -2,16 +2,17 @@
 <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"/>
 <html lang="de">
 	<head>
-		<?php include 'head.php'; ?>
+		<?php include 'includes/head.php'; ?>
 	</head>
 
 	<body>
     <div id="wrapper">
 		<?php
+			// the year that gets displayed, also used for calculating the age
 			define("PRAEMIENJAHR", 2023);
 
-			include 'header.php';
-			include 'functions.php';
+			include 'includes/header.php';
+			include 'business_logic.php';
 
 			if(isset($_GET['output'])) {
 				if(isset($_POST["jahrgang"])) {
@@ -21,7 +22,7 @@
 					$postleitzahl = filter_var($_POST["postleitzahl"], FILTER_SANITIZE_NUMBER_INT);
 				}
 				if(isset($_POST["praemienort"])) {
-					$praemienregion = filter_var($_POST["praemienort"], FILTER_SANITIZE_STRING);
+					$praemienregion = htmlspecialchars($_POST["praemienort"]);
 				}
 				if(isset($_POST["gesundheitskosten"])) {
 					$gesundheitskosten = intval($_POST["gesundheitskosten"]);
@@ -79,7 +80,7 @@
 										return;
 									}
 
-									$.post('plz.php', {'plz': $('#postleitzahl').val() }, function(data) {
+									$.post('ajax/plz.php', {'plz': $('#postleitzahl').val() }, function(data) {
 										if(data == ""){ 
 											$("#praemienstadt").hide();
 											return;
@@ -222,6 +223,6 @@
 			?>
 		</div>
 	</div>
-    <?php include 'footer.php'; ?>
+    <?php include 'includes/footer.php'; ?>
 	</body>
 </html>

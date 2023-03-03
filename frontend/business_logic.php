@@ -1,22 +1,6 @@
 <?php
-    function fetchData($url, $request_method = 'GET', $parameter = []) {
-        $ch = curl_init();
-
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_FAILONERROR, true);
-        
-        if($request_method == 'POST') {
-            curl_setopt($ch, CURLOPT_POST, true);
-        }
-        if (!empty($parameter)) {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($parameter));
-        }
-        $result = curl_exec($ch);
-        curl_close($ch);
-        
-        return json_decode($result, true);
-    }
+    include 'data_access.php';
+    define("API_URL", "http://localhost/franchiserechner-curl/backend/api.php?action=");
 
     function definiereAltersgruppe($prämienjahr, $jahrgang) {
         $altersjahr = $prämienjahr - $jahrgang;
@@ -28,7 +12,7 @@
     }
 
     function definiereUnfalldeckung($unfalldeckung) {
-        return $unfalldeckung == 0 ? "nein" : ($unfalldeckung == 1 ? "ja" : "");
+        return $unfalldeckung == 0 ? "nein" : "ja";
     }
 
     function definiereVersicherungsmodell($versicherungsmodell) {
@@ -49,7 +33,7 @@
     }
     
     function holeMonatspraemie($altersgruppe, $versicherungsmodell, $praemienregion, $unfalldeckung) {
-        $url = 'http://localhost/franchiserechner-curl/backend/api.php?action=holeMonatspraemie';
+        $url = API_URL.'holeMonatspraemie';
         $parameter = [
             'altersgruppe' => $altersgruppe,
             'versicherungsmodell' => $versicherungsmodell,
@@ -65,21 +49,20 @@
 			return;
 		}
 
-        $url = 'http://localhost/franchiserechner-curl/backend/api.php?action=getGemeindenByPLZ';
+        $url = API_URL.'getGemeindenByPLZ';
         $parameter = [
             'PLZ' => $PLZ
         ];
         $resultat = fetchData($url, 'POST', $parameter);
 
-		if(count($resultat) == 0) { 
+		if(count($resultat) == 0) {
 			echo "<p class='mt-3 mb-0'>Die Grundversicherung bieten wir lediglich in den Kantonen Wallis und Bern an.</p>";
 			return;
 		}
 
 		echo "<div class='mt-3'>
-				<select class='form-control' name='praemienort' style='height: 100% !important;'>";
+				<select class='form-control' name='praemienort'>";
                     foreach ($resultat as $eintrag) {
-                        var_dump($eintrag);
 						$gemeinde = $eintrag['Gemeinde'];
 						$bfs = $eintrag['BFS'];
 						$ort = $eintrag['Ort'];
