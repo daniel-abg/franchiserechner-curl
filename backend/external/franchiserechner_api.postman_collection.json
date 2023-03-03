@@ -1,0 +1,97 @@
+{
+	"info": {
+		"_postman_id": "ee166016-609f-4db4-bf8d-cf1c08ce9f8b",
+		"name": "franchiserechner_api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "26084889"
+	},
+	"item": [
+		{
+			"name": "getGemeindenByPLZ",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "PLZ",
+							"value": "3933",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/franchiserechner-curl/backend/api.php?action=getGemeindenByPLZ",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"franchiserechner-curl",
+						"backend",
+						"api.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "getGemeindenByPLZ"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getMonatspraemie",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "altersgruppe",
+							"value": "erwachsene",
+							"type": "text"
+						},
+						{
+							"key": "versicherungsmodell",
+							"value": "freie arztwahl",
+							"type": "text"
+						},
+						{
+							"key": "praemienregion",
+							"value": "VS 2",
+							"type": "text"
+						},
+						{
+							"key": "unfalldeckung",
+							"value": "nein",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost/franchiserechner-curl/backend/api.php?action=holeMonatspraemie",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"path": [
+						"franchiserechner-curl",
+						"backend",
+						"api.php"
+					],
+					"query": [
+						{
+							"key": "action",
+							"value": "holeMonatspraemie"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
