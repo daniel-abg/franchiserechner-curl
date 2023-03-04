@@ -1,16 +1,37 @@
-<?php
-    function holeMonatspraemie($verbindung, $altersgruppe, $versicherungsmodell, $praemienregion, $unfalldeckung) {
-        $sql = "SELECT * FROM ".strtolower($verbindung->real_escape_string($altersgruppe))." WHERE Versicherungsmodell='".$verbindung->real_escape_string($versicherungsmodell)."' AND Kanton='".$verbindung->real_escape_string($praemienregion)."' AND Unfall='".$verbindung->real_escape_string($unfalldeckung)."'";
-        return $verbindung->query($sql)->fetch_assoc();
+<?php    
+    function holeMonatspraemie($verbindung, $altersgruppe, $params) {
+        $allowedTables = ['kinder', 'jugendliche', 'erwachsene']; // whitelist of allowed table names
+        if (!in_array($altersgruppe, $allowedTables)) {
+            throw new Exception("Invalid parameter: altersgruppe");
+        }
+
+        $sql = "SELECT * FROM {$altersgruppe} WHERE Versicherungsmodell=? AND Kanton=? AND Unfall=?";
+        $stmt = $verbindung->prepare($sql);
+        
+        // Bind parameters
+        $types = str_repeat('s', count($params));
+        $bindParams = array_merge([$types], array_values($params));    
+        $refs = array();
+        foreach($bindParams as $key => $value) {
+            $refs[$key] = &$bindParams[$key];
+        }    
+        call_user_func_array(array($stmt, 'bind_param'), $refs);
+        
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_assoc();
     }
 
-    function holeGemeinde($verbindung, $plz) {
-        $sql = "SELECT * FROM orte WHERE PLZ = '".$verbindung->real_escape_string($plz)."'";
-		$resultate = array();
-        $resultat = $verbindung->query($sql);
-        while($eintrag = $resultat->fetch_assoc()) {
-            $resultate[] = $eintrag;
+    function holeGemeinde($verbindung, $params) {
+        $sql = "SELECT * FROM orte WHERE PLZ = ?";
+        $stmt = $verbindung->prepare($sql);
+
+        foreach ($params as $param) {
+            $stmt->bind_param("s", $param);
         }
-        return $resultate;
+
+        $stmt->execute();
+        $result = $stmt->get_result();
+        return $result->fetch_all(MYSQLI_ASSOC);
     }
 ?>

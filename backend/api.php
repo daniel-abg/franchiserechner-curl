@@ -6,18 +6,25 @@
 
     switch($action) {
         case "holeMonatspraemie":
-            $requiredParams = ['altersgruppe', 'versicherungsmodell', 'praemienregion', 'unfalldeckung'];
-            foreach($requiredParams as $param){
-                ${$param} = $_POST[$param] ?? exit("Missing parameter: $param");
+            $requiredParams = [
+                'versicherungsmodell',
+                'praemienregion',
+                'unfalldeckung'
+            ];
+            $params = [];
+            $altersgruppe = $_POST['altersgruppe'] ?? exit("Missing parameter: altersgruppe");
+            foreach ($requiredParams as $param) {
+                $params[$param] = $_POST[$param] ?? exit("Missing parameter: $param");
             }
-            echo json_encode(holeMonatspraemie($verbindung, $altersgruppe, $versicherungsmodell, $praemienregion, $unfalldeckung));
+            echo json_encode(holeMonatspraemie($verbindung, $altersgruppe, $params));
             break;
         case "getGemeindenByPLZ":
             $requiredParams = ['PLZ'];
-            foreach($requiredParams as $param){
-                ${$param} = $_POST[$param] ?? exit("Missing parameter: $param");
+            $params = [];
+            foreach ($requiredParams as $param) {
+                $params[$param] = $_POST[$param] ?? exit("Missing parameter: $param");
             }
-            echo json_encode(holeGemeinde($verbindung, $PLZ));
+            echo json_encode(holeGemeinde($verbindung, $params));
             break;
         default:
             exit('No action defined. Easy fix. 😎');
